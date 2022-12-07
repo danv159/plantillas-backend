@@ -279,21 +279,20 @@ Las tres opciones son excluyentes.
 ### a. Haciendo uso sólamente de la autenticación del sistema. 
 Para poder usar esta configuración, se debe realizar lo siguiente:
 
-> Editar el archivo ***/src/routes/seguridad/jwtokenRT.js***, en el segmento de cógido (líneas 228-237) que contiene lo siguiente :
+>   Editar el archivo ***/src/routes/seguridad/jwtokenRT.js***, en el segmento de cógido (líneas 226-234) que contiene lo siguiente :
 
 ```sh
-228 // La siguiente línea trabaja con LDAP, realiza una autenticación con el servidor LDAP y si el usuario no existe en el sistema, lo adiciona a partir de la información
-229 // del servidor LDAP. Descomentar la línea y comentar app.post("/autenticar", (req,res) => {
-230 // app.post("/autenticar", interceptar, (req,res) => {
-231
-232 // La siguiente línea trabaja directamente con el sistema, es una autenticación directa con la base de datos del sistema. Funcionará si la línea app.post("/autenticar", interceptar, (req,res) => {
-233 // está comentada.
-234 // app.post("/autenticar", (req,res) => {
-235 //   xautenticacion(req, res, 1);
-236 // });
-237 
+226 // La siguiente línea trabaja con LDAP, realiza una autenticación con el servidor LDAP y si el usuario no existe en el sistema, lo adiciona a partir de la información
+227 // del servidor LDAP. Descomentar la línea y comentar app.post("/autenticar", (req,res) => {
+228 // app.post("/autenticar", interceptar, (req,res) => {
+229
+230 // La siguiente línea trabaja directamente con el sistema, es una autenticación directa con la base de datos del sistema. Funcionará si la línea app.post("/autenticar", interceptar, (req,res) => {
+231 // está comentada.
+232 // app.post("/autenticar", (req,res) => {
+233 //   xautenticacion(req, res, 1);
+234 // }); 
 ```
-> Tal como lo explican los comentarios, se debe descomentar las línea 234, 235 y 236. Para la puesta en producción, se deben eliminar las líneas 228, 229, 230, 231, 232 y 233. Quedando así, el siguiente segmento de código:
+> Tal como lo explican los comentarios, se debe descomentar las línea 232, 233 y 234. Para la puesta en producción, se deben eliminar las líneas 226, 227, 228, 229, 230 y 231. Quedando así, el siguiente segmento de código:
 
 ``` sh
 app.post("/autenticar", (req,res) => {
@@ -304,21 +303,20 @@ app.post("/autenticar", (req,res) => {
 ### b. Haciendo uso del servicio de autenticación LDAP.
 Para poder usar esta configuración, se debe realizar lo siguiente:
 
-> Editar el archivo ***/src/routes/seguridad/jwtokenRT.js***, en el segmento de cógido (líneas 228-237) que contiene lo siguiente :
+> Editar el archivo ***/src/routes/seguridad/jwtokenRT.js***, en el segmento de cógido (líneas 226-234) que contiene lo siguiente :
 
 ```sh
-228 // La siguiente línea trabaja con LDAP, realiza una autenticación con el servidor LDAP y si el usuario no existe en el sistema, lo adiciona a partir de la información
-229 // del servidor LDAP. Descomentar la línea y comentar app.post("/autenticar", (req,res) => {
-230 // app.post("/autenticar", interceptar, (req,res) => {
-231
-232 // La siguiente línea trabaja directamente con el sistema, es una autenticación directa con la base de datos del sistema. Funcionará si la línea app.post("/autenticar", interceptar, (req,res) => {
-233 // está comentada.
-234 // app.post("/autenticar", (req,res) => {
-235 //   xautenticacion(req, res, 1);
-236 // });
-237 
+226 // La siguiente línea trabaja con LDAP, realiza una autenticación con el servidor LDAP y si el usuario no existe en el sistema, lo adiciona a partir de la información
+227 // del servidor LDAP. Descomentar la línea y comentar app.post("/autenticar", (req,res) => {
+228 // app.post("/autenticar", interceptar, (req,res) => {
+229
+230 // La siguiente línea trabaja directamente con el sistema, es una autenticación directa con la base de datos del sistema. Funcionará si la línea app.post("/autenticar", interceptar, (req,res) => {
+231 // está comentada.
+232 // app.post("/autenticar", (req,res) => {
+233 //   xautenticacion(req, res, 1);
+234 // }); 
 ```
-> Tal como lo explican los comentarios, se debe descomentar las líneaas 230, 235 y 236. Para la puesta en producción, se deben eliminar las líneas 228, 229, 231, 232, 233 y 234. Quedando así, el siguiente segmento de código:
+> Tal como lo explican los comentarios, se debe descomentar las líneas 228, 233 y 234. Para la puesta en producción, se deben eliminar las líneas 226, 227, 229, 230, 231 y 232. Quedando así, el siguiente segmento de código:
 
 ``` sh
 app.post("/autenticar", interceptar, (req,res) => {
@@ -328,11 +326,11 @@ app.post("/autenticar", interceptar, (req,res) => {
 Se requiere de la configuración de LDAP, que ya fue explicada en este archivo.
 ### c. Haciendo uso del servicio de autenticación de Ciudadanía Digital.
 
-Para esta opción, en el archivo ***/src/routes/seguridad/jwtokenRT.js***, eliminar las líneas 40 a la 251. Es decir, todo lo referente a la ruta de "/autenticar". Es importante eliminar estas líneas, para la seguridad y el correcto funcionamiento del sistema.
+Para esta opción, en el archivo ***/src/routes/seguridad/jwtokenRT.js***, eliminar las líneas 38 a la 249. Es decir, todo lo referente a la ruta de "/autenticar". Es importante eliminar estas líneas, para la seguridad y el correcto funcionamiento del sistema.
 
 ### Para habilitar la validación de usuarios con LDAP
 
-> **Importante.-** Se recomienda habilitar la validación con LDAP, para ello, en el archivo `autorizacion.controller.js` en las líneas `186` y `187` se debe descomentar la siguiente porción de código, quedando de la siguiente manera:
+> **Importante.-** Se recomienda habilitar la validación con LDAP, para ello, en el archivo `autorizacion.controller.js` en las líneas `187` y `188` se debe descomentar la siguiente porción de código, quedando de la siguiente manera:
 
 ```js
   const esValidoLdap = await validarConLdap(user);
