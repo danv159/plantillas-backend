@@ -282,7 +282,7 @@ module.exports = (app) => {
           _.each(respLdap.other, usuario => {
             const email = usuario.mail;
             const validar = email.split('@');
-            if (validar[1].indexOf('agetic.gob.bo') == -1) {
+            if (validar[1].indexOf(cfg.dominioCorreoLdap) == -1) {
               respuesta.mensaje = 'Usted no esta autorizado para ingresar al sistema.';
               respuesta.valido = false;
               return resolve(respuesta);

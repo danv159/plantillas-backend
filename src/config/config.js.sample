@@ -129,7 +129,7 @@ module.exports = () => {
     client_params: {
       scope: ['openid profile email fecha_nacimiento celular offline_access'],
     },
-
+    dominioCorreoLdap: 'dominio.gob.bo',
   };
 
   return config;
