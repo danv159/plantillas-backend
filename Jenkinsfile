@@ -1,7 +1,16 @@
 pipeline{
   agent{
-    label nodo-backend
+    label debianhost
   }
+
+  environment {
+        DB_USERNAME =  'plantillasBE'
+        DB_PASSWORD =  'passwordBE'
+        DB_DATABASE = 'databseBE'
+        DB_HOST = 'localhost'
+        DB_PORT = '5432'
+  }
+  
   stages{
     stage('1.instalacion de paquetes minimos'){
       steps{
@@ -27,7 +36,7 @@ pipeline{
         sh "sudo apt-get install postgresql-9.6";
         sh "sudo su";
         sh "su postgres";
-        sh "pqsl -c CREATE USER miUsuario WITH PASSWORD 'password';";
+        sh "pqsl -c CREATE USER $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';";
         
         sh "su -";
         sh "sudo /etc/init.d/postgresql restart";
@@ -36,9 +45,9 @@ pipeline{
         sh "sudo su";
         sh "su postgres";
         
-        sh "psql -c CREATE DATABASE miBaseDeDatos OWNER miUsuario;";
+        sh "psql -c CREATE DATABASE $DB_DATABASE OWNER $DB_USERNAME;";
         //instalando extensiones necesarias
-        sh "psql -d miBaseDeDatos -c CREATE EXTENSION IF NOT EXISTS tablefunc;";
+        sh "psql -d $DB_DATABASE -c CREATE EXTENSION IF NOT EXISTS tablefunc;";
 
         sh "psql -c  "\l" ";
         
@@ -85,23 +94,32 @@ pipeline{
       steps{
         sh "cp src/config/config.json.sample src/config/config.json";
         sh "cp src/config/config.js.sample src/config/config.js";
-      }
-    }
-    stage(''){
-      steps{
+
+        sh "sed -i 's/"username": "postgres"/"username": "$DB_USERNAME"/g' /src/config/config.json";
+        sh "sed -i 's/"password": "postgres"/"password": "$DB_PASSWORD"/g' /src/config/config.json";
+        sh "sed -i 's/"database": "name_database"/"database": "$DB_DATABASE"/g' /src/config/config.json";
+        sh "sed -i 's/"host": "127.0.0.1"/"host": "$DB_HOST"/g' /src/config/config.json";
+        sh "sed -i 's/"port": 5432/"port": "$DB_PORT"/g' /src/config/config.json";
         
       }
     }
-    stage(''){
+    stage('7. instalar dependencias e inicializar db'){
       steps{
-        
+        sh "npm i";
+        sh "npm run parchar";
+        sh "npm run setup";
       }
     }
-    stage(''){
+    stage('8. ejecucion de la aplicacion'){
       steps{
-        
+        sh "npm i -g pm2";
+        sh "pm2 start prod.json";
+        sh  "pm2 list";
+
+        //completar: pm2 startup, un comando, pm2 save
       }
     }
+    
   }
   
 }
